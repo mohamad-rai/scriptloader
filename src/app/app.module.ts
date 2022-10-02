@@ -14,6 +14,7 @@ import { NzSpinModule } from 'ng-zorro-antd/spin';
 import { QuillModule } from 'ngx-quill';
 import * as Sentry from '@sentry/angular';
 import { Router } from '@angular/router';
+import { ScriptService } from './services/script.service';
 
 @NgModule({
   declarations: [AppComponent],
@@ -48,6 +49,7 @@ import { Router } from '@angular/router';
       deps: [Sentry.TraceService],
       multi: true,
     },
+    ScriptService,
   ],
   bootstrap: [AppComponent]
 })
