@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { arrayRemove, arrayUpsert, setLoading } from '@datorama/akita';
 import { JComment } from '@trungk18/interface/comment';
 import { JIssue } from '@trungk18/interface/issue';
+import { KanbanPlugin, KanbanPluginMethod, KanbanPluginSchema } from '@trungk18/interface/kanban-plugin';
 import { JProject } from '@trungk18/interface/project';
 import { DateUtil } from '@trungk18/project/utils/date';
 import { of } from 'rxjs';
@@ -41,6 +42,43 @@ export class ProjectService {
         })
       )
       .subscribe();
+  }
+  getProjectPlugins() {
+    this._http
+      .get<JProject>(`${this.baseUrl}/plugins.json`)
+      .pipe(
+        setLoading(this._store),
+        tap((plugins) => {
+          this._store.update(plugins);
+        }),
+        catchError((error) => {
+          this._store.setError(error);
+          return of(error);
+        })
+      )
+      .subscribe();
+  }
+
+  savePluginMethods<T extends keyof KanbanPlugin>(methodName: T, method: KanbanPlugin[T]) {
+    this._store.update((state) => {
+      if (state.pluginMethods){
+        if (state.pluginMethods[methodName])
+          state.pluginMethods[methodName].push(method);
+        else
+          state.pluginMethods[methodName] = method;
+        const i = state.pluginMethods[methodName];
+      }
+      else {
+        const pluginMethods: KanbanPluginSchema = {};
+        pluginMethods[methodName] = [method];
+        return {
+          ...state,
+          pluginMethods
+        }
+      }
+      console.log(state);
+      return state;
+    });
   }
 
   updateProject(project: Partial<JProject>) {

@@ -1,4 +1,5 @@
 import { JIssue } from './issue';
+import { KanbanPlugin, KanbanPluginArray, PluginDetail } from './kanban-plugin';
 import { JUser } from './user';
 
 export interface JProject {
@@ -11,6 +12,8 @@ export interface JProject {
   updateAt: string;
   issues: JIssue[];
   users: JUser[];
+  plugins: PluginDetail[];
+  pluginMethods: KanbanPluginArray;
 }
 
 // eslint-disable-next-line no-shadow
