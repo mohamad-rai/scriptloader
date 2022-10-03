@@ -1,12 +1,18 @@
-import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import {Component, Input, OnChanges, OnInit, Renderer2, SimpleChanges} from '@angular/core';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { JIssue } from '@trungk18/interface/issue';
 import { IssuePriorityIcon } from '@trungk18/interface/issue-priority-icon';
+import { KanbanPlugin } from '@trungk18/interface/kanban-plugin';
 import { JUser } from '@trungk18/interface/user';
 import { ProjectQuery } from '@trungk18/project/state/project/project.query';
 import { IssueUtil } from '@trungk18/project/utils/issue';
+import { ScriptService } from '@trungk18/services/script.service';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { IssueModalComponent } from '../issue-modal/issue-modal.component';
+
+const SCRIPT_PATH = '../../../../../assets/plugin.js';
+
+declare let plg: KanbanPlugin;
 
 @Component({
   selector: 'issue-card',
@@ -20,9 +26,24 @@ export class IssueCardComponent implements OnChanges, OnInit {
   issueTypeIcon: string;
   priorityIcon: IssuePriorityIcon;
 
-  constructor(private _projectQuery: ProjectQuery, private _modalService: NzModalService) {}
+  constructor(
+    private _projectQuery: ProjectQuery,
+    private _modalService: NzModalService,
+    private renderer: Renderer2,
+    private scriptService: ScriptService
+  ) {}
 
   ngOnInit(): void {
+    const scriptElement = this.scriptService.loadJsScript(this.renderer, SCRIPT_PATH);
+    scriptElement.onload = () => {
+      // console.log(this.issue.title);
+
+      this.issue = plg.cards(this.issue);
+    }
+    scriptElement.onerror = (e: Event) => {
+      console.log('error on loading js');
+    }
+
     this._projectQuery.users$.pipe(untilDestroyed(this)).subscribe((users) => {
       this.assignees = this.issue.userIds.map((userId) => users.find((x) => x.id === userId));
     });
