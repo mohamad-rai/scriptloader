@@ -1,0 +1,11 @@
+{
+  "plugins": [
+    {
+      "NOTE": "ITS BETTER TO SAVE THIS FILE AS TS TO USE INTERFACE",
+      "token": "jsdaco9dx8cvfhnev29cevgoi2hn3v9v*^Sctg8sd%^Ct856cTD*C%6tg",
+      "name": "title checker",
+      "scope": ["issueCard"],
+      "path": "../../../../../assets/plugin.js"
+    }
+  ]
+}

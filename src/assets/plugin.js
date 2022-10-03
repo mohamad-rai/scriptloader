@@ -1,6 +1,6 @@
-var plg = {
+var anObjectDefinedInPluginJSFile = {
     alert: function() { alert('hallo') },
-    cards: function(card) {
+    issueCard: function(card) {
         let updatedCard = {...card}
         if (/[A-H]/.test(card.title[0]))
             updatedCard.title = '[A-H] ' + card.title;

@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation, AfterViewInit, ChangeDetectorRef, Renderer2 } from '@angular/core';
+import { Component, ViewEncapsulation, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { environment } from '../environments/environment';
 import { ProjectQuery } from './project/state/project/project.query';
